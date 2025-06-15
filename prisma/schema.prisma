@@ -15,17 +15,70 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   // name String
-  email String @unique
-  role Role @default(USER)
-  password String
-  salt String 
+  username String
+  email     String   @unique
+  pictureId String
+  role      Role     @default(USER)
+  // password  String
+  // salt      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  submissions Submission[]
 }
 
 enum Role {
   USER
   ADMIN
-} 
+}
+
+model Problem {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  testcases   Testcase[]
+  submissions Submission[]
+}
+
+model Testcase {
+  id        String   @id @default(uuid())
+  input     String
+  output    String
+  problemId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  problem Problem @relation(fields: [problemId], references: [id])
+}
+
+model Contest {
+  id        String   @id @default(uuid())
+  title     String
+  status    Status
+  started   DateTime
+  ended     DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Status {
+  ACTIVE
+  ENDED
+}
+
+model Submission {
+  id        String @id @default(uuid())
+  userId    String
+  problemId String
+  source_code String
+  
+  user    User    @relation(fields: [userId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id])
+
+  @@index([userId, problemId])
+}

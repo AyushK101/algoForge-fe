@@ -5,7 +5,6 @@
 // import { revalidatePath } from 'next/cache';
 // import { createUserSession } from '../session';
 
- 
 // const SERVER_BASE_URL = '';
 
 // export async function emailAuthLogin(payload: emailAuthType): Promise<boolean> {
@@ -43,8 +42,17 @@
 //   return false;
 // }
 
-
 // export async function emailLogout() {
 //   // clearSessionCookie();
 // }
 
+'use server';
+import { cookies } from 'next/headers';
+import * as jose from 'jose';
+import { NextResponse } from 'next/server';
+import { cache } from '@/db/cache';
+import { verifySignedJwt } from '@/lib/jwtHelper';
+
+export const getCurrentUser = async (): Promise<any> => {
+
+};
