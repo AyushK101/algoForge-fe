@@ -31,13 +31,21 @@ export async function POST() {
   const expInSec = Math.floor(exp / 1000);
   const safeExp = Math.max(expInSec, 0);
 
-  await cache.set(RedisKeyTypes.BLACKLISTED, [jti], true, safeExp);
+  // await cache.set(RedisKeyTypes.BLACKLISTED, [jti], true, safeExp);
 
   const response = NextResponse.json({
     success: true,
     message: "User logged out and token blacklisted",
   });
-  response.cookies.delete("refreshToken");
+  response.cookies.set({
+    name: 'refreshToken',
+    value: '',
+    httpOnly: true,
+    maxAge: 0,
+    path: '/',
+    sameSite: "lax",
+    secure: true
+  });
 
   return response;
 }

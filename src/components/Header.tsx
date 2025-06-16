@@ -16,7 +16,7 @@ const Header = () => {
       <div className='w-full p-2  bg-slate-900 ht-0  sm:fixed'>
         <Container className='flex flex-wrap justify-between items-center'>
         <div className="flex justify-center items-center  gap-4 flex-wrap">
-          <Image priority src={'/android-chrome-512x512.png'} alt="logo" height={50} width={50} priority />
+          <Image priority src={'/android-chrome-512x512.png'} alt="logo" height={50} width={50} />
           <h1 className="text-3xl font-extrabold text-white">AlgoForge</h1>
         </div>
         <div className='flex gap-2 flex-wrap items-center justify-center'>
@@ -24,7 +24,7 @@ const Header = () => {
           <Button className='bg-transparent text-white text-md hover:bg-slate-500'>Problems</Button>
           <Button className='bg-transparent text-white text-md hover:bg-slate-500'>Standings</Button>
         </div>
-        {/* <ToggleMode/> */}
+        <ToggleMode/>
         <Profile/>
         {/* {user.user ? (
         <Button className='bg-white text-black hover:bg-blue-400' onClick={()=>{}}>login</Button>

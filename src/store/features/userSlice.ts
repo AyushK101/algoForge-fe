@@ -3,26 +3,30 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 type initialStateType = {
-  user: object | null,
-  accessToken: string | null
+  user: {
+    id: string
+    username: string
+    email: string
+    pictureId: string
+    role: string
+    createdAt: string
+    updatedAt: string
+  } | null,
 }
 
 const initialState: initialStateType = {
   user: null,
-  accessToken: null 
 }
 
 export const userSlice = createSlice({
   name: 'userSlice',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<{user: any, accessToken: string}>) => {
+    setUser: (state, action: PayloadAction<{user: any}>) => {
       state.user = action.payload.user;
-      state.accessToken = action.payload.accessToken;
     },
     unsetUser: (state) => {
       state.user = null;
-      state.accessToken = null;
     }
   }
 })

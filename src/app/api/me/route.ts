@@ -71,10 +71,8 @@ export async function GET() {
     });
     return response;
   }
-  const accessToken = await tokenService.signAccessToken({userId: user.id, role: 'USER'})
   return NextResponse.json({
     success: true,
-    user,
-    accessToken
+    user
   });
 }

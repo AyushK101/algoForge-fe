@@ -12,7 +12,7 @@ const Profile = () => {
     //@ts-ignore
     <div className='flex gap-2 items-center'>
 
-      <div className='text-white  '>{user.accessToken ? <Image priority className='rounded-full' src={user.user?.pictureId} height={50} width={50} alt='user' /> : <FaUser className='' size={20} />}
+      <div className='text-white  '>{user.user?.pictureId ? <Image priority className='rounded-full' src={user.user?.pictureId} height={50} width={50} alt='user' /> : <FaUser className='' size={20} />}
       </div>
 
       <p className='text-white font-semibold '>{user.user?.username}</p>
