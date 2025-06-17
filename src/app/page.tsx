@@ -9,7 +9,7 @@ const page = () => {
   return (
     <>
 
-      <div className='sm:pt-17'></div>
+
       <div className='flex justify-center p-20' id='page'>
         <div className='flex flex-col w-fit items-start justify-center p-2 m-2 gap-4'>
           <h1 className='text-4xl font-extrabold'>Welcome to AlgoForge</h1>

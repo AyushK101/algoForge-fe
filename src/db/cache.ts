@@ -3,7 +3,7 @@ import { InMemoryCache } from '@/lib/cache/in-memory-cache';
 import { RedisCache } from '@/lib/cache/redis-cache';
 
 const redisUrl = process.env.REDIS_URL;
-console.log({redisUrl});
+// console.log({redisUrl});
 export class Cache implements ICache {
   private static instance: Cache;
   private delegate: ICache;
