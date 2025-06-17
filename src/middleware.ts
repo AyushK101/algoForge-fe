@@ -1,42 +1,65 @@
-import  {NextRequest, NextResponse }from 'next/server'
+// middleware.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { tokenService } from '@/lib/services/tokenService'; 
+// import  prisma  from '@/db';             // adjust import to your setup
 
-// export const config = {
-//   matcher: ['/','/api/me']
-// }
+export const config = {
+  matcher: ['/admin/:path*'],
+};
 
-// export async function middleware(req: NextRequest) {
-//   const jwt = req.cookies.get('token')?.value;
-//   // console.log('JWT from cookie:', jwt);
+async function adminAuth(req: NextRequest) {
+  const accessToken = req.cookies.get('accessToken');
+  const refreshToken = req.cookies.get('refreshToken');
+  const url = new URL('/', req.url);
+  // console.log(accessToken,refreshToken)
+  if(!accessToken && !refreshToken) return NextResponse.redirect(url);
 
-//   if (!jwt) {
-//     // console.log('No JWT found. Redirecting.');
-//     return NextResponse.redirect(new URL('/', req.url));
-//   }
+  // if (accessToken) {
+  //   const payload = await tokenService.verifyAccessToken(accessToken.value);
+  //   if (!payload) return NextResponse.redirect(url);
+  //   userId = payload.userId;
+  // } else if (refreshToken) {
+  //   const payload = await tokenService.verifyRefreshToken(refreshToken.value);
+  //   if (!payload) return NextResponse.redirect(url);
 
-//   try {
-//     const payload = await verifyJwt(jwt) as JwtPayload;
-//     // console.log('Decoded payload:', payload);
+    // userId = payload.userId;
 
-//     if (!payload?.id) {
-//       // console.log('No valid payload ID found. Redirecting.');
-//       return NextResponse.redirect(new URL('/', req.url));
-//     }
+    // Set new access token
+    // const newAccessToken = await tokenService.signAccessToken(payload);
+    // const response = NextResponse.next();
 
-//     const requestHeaders = new Headers(req.headers);
-//     // console.log(payload.id)
-//     requestHeaders.set('X-user-id', payload.id);
+    // response.cookies.set('accessToken', newAccessToken, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   path: '/',
+    //   sameSite: 'lax',
+    //   maxAge: 60 * 60 // 1 hour
+    // });
 
-//     return NextResponse.next({
-//       request: {
-//         headers: requestHeaders,
-//       },
-//     });
-//   } catch (err) {
-//     console.error('JWT Verification failed:', err);
-//     return NextResponse.redirect(new URL('/', req.url));
-//   }
-// }
+    // Check if user is admin
+  //   const user = await prisma.user.findUnique({ where: { id: userId } });
+  //   if (!user || user.role !== 'ADMIN') return NextResponse.redirect(url);
 
-export default function middleware () {
+  //   return response;
+  // } else {
+  //   return NextResponse.redirect(url);
+  // }
 
+  // // Final admin role check (if accessToken existed and userId was extracted)
+  // const user = await prisma.user.findUnique({ where: { id: userId } });
+  // if (!user || user.role !== 'ADMIN') return NextResponse.redirect(url);
+
+  // return NextResponse.redirect(new URL('/',req.url));
+}
+
+export async function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
+  if (pathname.startsWith('/admin')) {
+    return await adminAuth(req);
+  }
+
+  
+
+  return NextResponse.next();
 }

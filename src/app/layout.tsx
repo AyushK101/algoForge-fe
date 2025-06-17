@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import ClientAuthSync from '@/components/ClientAuthSync';
 import { SessionProvider } from 'next-auth/react';
 import { Providers } from '@/components/Provider';
+import Header from '@/components/Header';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,23 +32,24 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning className='white'>
-      <body suppressHydrationWarning 
+      <body suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
 
         <Toaster position='top-center' />
         <Providers>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ReduxProvider>
-            <ClientAuthSync/>
-            {children}
-          </ReduxProvider>
-        </ThemeProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ReduxProvider>
+              <ClientAuthSync />
+              <Header />
+              {children}
+            </ReduxProvider>
+          </ThemeProvider>
         </Providers>
       </body>
     </html>

@@ -3,7 +3,7 @@ import { InMemoryCache } from '@/lib/cache/in-memory-cache';
 import { RedisCache } from '@/lib/cache/redis-cache';
 
 const redisUrl = process.env.REDIS_URL;
-
+console.log({redisUrl});
 export class Cache implements ICache {
   private static instance: Cache;
   private delegate: ICache;
@@ -27,7 +27,7 @@ export class Cache implements ICache {
     type: string,
     args: string[],
     value: any,
-    expirySeconds: number = parseInt(process.env.CACHE_EXPIRE_S || '100', 10),
+    expirySeconds: number = parseInt(process.env.CACHE_EXPIRE_S || '1000', 10),
   ): Promise<void> {
     return this.delegate.set(type, args, value, expirySeconds);
   }

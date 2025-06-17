@@ -11,3 +11,11 @@ export type JWTRefreshPayload = {
   userId: string;
   role: string;
 };
+
+export type problemType = {
+  id: string;
+  title: string;
+  difficulty: string;
+  solved: boolean;
+  problemId: number;
+};

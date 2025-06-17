@@ -4,13 +4,16 @@ import { tokenService } from '@/lib/services/tokenService';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { z } from 'zod';
+import { string, z } from 'zod';
 
 const bodySchema = z.object({
   email: z.string().email(),
   username: z.string().min(1),
   pictureId: z.string().optional(),
 });
+
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -27,25 +30,38 @@ export async function GET(req: NextRequest) {
     where: { email: session.user.email },
   });
 
+  enum ROLE {
+    ADMIN= 'ADMIN',
+    USER='USER'
+  }
+
+  let role: ROLE = ROLE.USER;
+  if(!ADMIN_EMAIL) {
+    console.log('admin_email undefined');
+    process.exit();
+  }
+  if(session.user.email == ADMIN_EMAIL) {
+    role = ROLE.ADMIN;
+  }
   if (!user) {
     user = await prisma.user.create({
       data: {
         username: session.user.name ?? '',
         pictureId: session.user.image ?? '',
         email: session.user.email,
-        role: 'USER',
+        role: role,
       },
     });
   }
 
   const accessToken = await tokenService.signAccessToken({
     userId: user.id,
-    role: 'USER',
+    role: user.role,
   });
 
   const refreshToken = await tokenService.signRefreshToken({
     userId: user.id,
-    role: 'USER',
+    role: user.role,
   });
 
   const options = {
@@ -55,7 +71,12 @@ export async function GET(req: NextRequest) {
     path: '/',
   };
 
-  const response = NextResponse.redirect(String(new URL('/', req.url)))
+  let response: NextResponse;
+  if(user.role == 'ADMIN') {
+    response = NextResponse.redirect(String(new URL('/admin', req.url)))
+  } else {
+    response = NextResponse.redirect(String(new URL('/', req.url)))
+  } 
   console.log({url: String(new URL('/',req.url))})
   // response.headers.set(
   //   'Set-Cookie',
@@ -70,7 +91,7 @@ export async function GET(req: NextRequest) {
   //     }),
   //   ].join('; '),
   // );
-  const res = NextResponse.json({ success: true });
+  const res = NextResponse.json({ success: true, message: "assigned custom access & refresh tokens" });
 
   response.cookies.set('accessToken', accessToken, {
     httpOnly: true,
