@@ -11,6 +11,7 @@ export class Cache implements ICache {
   private constructor() {
     if (redisUrl) {
       this.delegate = RedisCache.getInstance(redisUrl);
+      console.log('creating redis cache')
     } else {
       this.delegate = InMemoryCache.getInstance();
     }

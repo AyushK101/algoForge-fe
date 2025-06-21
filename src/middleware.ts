@@ -1,10 +1,11 @@
 // middleware.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { tokenService } from '@/lib/services/tokenService'; 
+// import { useSearchParams } from 'next/navigation';
 // import  prisma  from '@/db';             // adjust import to your setup
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*','/problems/:problemId'],
 };
 
 async function adminAuth(req: NextRequest) {
@@ -52,13 +53,26 @@ async function adminAuth(req: NextRequest) {
   // return NextResponse.redirect(new URL('/',req.url));
 }
 
+const submissionMiddleware = async (req: NextRequest) => {
+  const accessToken = req.cookies.get('accessToken');
+  const refreshToken = req.cookies.get('refreshToken');
+  // 
+  if(!accessToken && !refreshToken) {
+    return NextResponse.redirect(new URL('/invalidsession',req.url));
+  }
+
+  //NOTE can't do verification here as using redis to blacklist tokens if verification fails.
+
+  return NextResponse.next();
+}
+
+
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (pathname.startsWith('/admin')) {
     return await adminAuth(req);
-  }
-
+  } 
   
 
   return NextResponse.next();

@@ -3,6 +3,7 @@
 import * as jose from 'jose';
 // import { cache } from '@/db/cache' // Your Redis client instance
 import { JWTAccessPayload, JWTRefreshPayload, RedisKeyTypes } from '@/types/index';
+import { cache } from '@/db/cache';
 
 const encoder = new TextEncoder();
 
@@ -75,7 +76,7 @@ class TokenService {
   public async verifyAccessToken(token: string): Promise<CustomJwtPayload | null> {
     try {
       const { payload }: {payload: CustomJwtPayload} = await jose.jwtVerify(token, this.accessSecret);
-      // if (await this.isBlacklisted(payload.jti as string)) return null;
+      if (await this.isBlacklisted(payload.jti as string)) return null;
       return payload;
     } catch {
       return null;
@@ -87,7 +88,7 @@ class TokenService {
       debugger
       
       const { payload }: { payload: CustomJwtPayload } = await jose.jwtVerify(token, this.refreshSecret);
-      // if (await this.isBlacklisted(payload.jti as string)) return null;
+      if (await this.isBlacklisted(payload.jti as string)) return null;
       // console.log({payload})
       return payload;
     } catch (err){
@@ -96,13 +97,13 @@ class TokenService {
     }
   }
 
-  // public async blacklistToken(jti: string, expInSeconds: number): Promise<void> {
-  //   await cache.set(RedisKeyTypes.BLACKLISTED,[jti],true,expInSeconds);
-  // }
+  public async blacklistToken(jti: string, expInSeconds: number): Promise<void> {
+    await cache.set(RedisKeyTypes.BLACKLISTED,[jti],true,expInSeconds);
+  }
 
-  // public async isBlacklisted(jti: string): Promise<boolean> {
-  //   return await cache.get(RedisKeyTypes.BLACKLISTED,[jti]) === 'true';
-  // }
+  public async isBlacklisted(jti: string): Promise<boolean> {
+    return await cache.get(RedisKeyTypes.BLACKLISTED,[jti]) === 'true';
+  }
 
 
   public getAccessTokenExpiry(): number {

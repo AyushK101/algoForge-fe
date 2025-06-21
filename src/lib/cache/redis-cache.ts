@@ -45,6 +45,7 @@ export class RedisCache implements ICache {
   }
 
   private generateKey(type: string, args: string[]): string {
+    // console.log({key: `${type}:${args.join(':')}`})
     return `${type}:${args.join(':')}`;
   }
 }

@@ -44,7 +44,7 @@ export async function GET(request: Request) {
     [page.toString(), limit.toString()],
     problems,
   );
-  console.log(res);
+  // console.log(res);
   const response = NextResponse.json(
     {
       success: true,
