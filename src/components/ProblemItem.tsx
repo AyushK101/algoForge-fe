@@ -6,7 +6,7 @@ import { Button } from './ui/button';
 import { useRouter } from 'next/navigation';
 import { problemType } from '@/types';
 
-const ProblemItem = ({ title, difficulty, id }: problemType) => {
+const ProblemItem = ({ title, difficulty, id }: problemType['problem']) => {
   const router = useRouter();
   const handleRedirect = () => {
     router.push(`/problems/${id}`); // ✅ Added leading slash

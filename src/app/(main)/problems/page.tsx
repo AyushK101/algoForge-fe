@@ -8,9 +8,10 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React, { Suspense, useEffect, useState } from 'react'
 import Loading from './loading'
 import Container from '@/components/Container'
+import { Skeleton } from '@/components/ui/skeleton'
 
-const ProblemsPage = ({ problemsR }: { problemsR: problemType[] }) => {
-  const [problems, setProblems] = useState<problemType[]>(problemsR);
+const ProblemsPage = () => {
+  const [problems, setProblems] = useState<problemType['problem'][]>([]);
   const page = Number(useSearchParams().get('page') || 1);
   const [loading, setLoading] = useState(false);
   const limit = 10;
@@ -20,9 +21,10 @@ const ProblemsPage = ({ problemsR }: { problemsR: problemType[] }) => {
     async function populate() {
       try {
         setLoading(true);
-        const result = await axios.get<string, { data: { problems: problemType[] } }>(
+        const result = await axios.get<string, { data: { problems: problemType['problem'][] } }>(
           `/api/problems?page=${page}&limit=${limit}`
         );
+        // console.log(result.data.problems)
         setProblems(result.data.problems);
       } catch (error) {
         console.error(error);
@@ -55,14 +57,19 @@ const ProblemsPage = ({ problemsR }: { problemsR: problemType[] }) => {
           </thead>
           <tbody>
             {loading ? (
-              <tbody>
-                <Loading/>
-              </tbody>
-            ) : (
-              problems?.map( problem => (
-                <ProblemItem key={problem.id} {...problem} />
+              Array.from({ length: 6 }).map((_, i) => (
+                <tr key={i} className="animate-pulse">
+                  <td className="px-4 py-3"><Skeleton className="h-4 w-32" /></td>
+                  <td className="px-4 py-3"><Skeleton className="h-4 w-24" /></td>
+                  <td className="px-4 py-3"><Skeleton className="h-4 w-20" /></td>
+                  <td className="px-4 py-3"><Skeleton className="h-4 w-20" /></td>
+                </tr>
               ))
-
+            ) : (
+              problems?.map((problem) => {
+                // console.log(problem)
+                return <ProblemItem key={problem.id} {...problem} />
+              })
             )}
           </tbody>
         </table>

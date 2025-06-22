@@ -3,7 +3,7 @@
 import * as jose from 'jose';
 // import { cache } from '@/db/cache' // Your Redis client instance
 import { JWTAccessPayload, JWTRefreshPayload, RedisKeyTypes } from '@/types/index';
-import { cache } from '@/db/cache';
+import { cache } from '@/lib/cache';
 
 const encoder = new TextEncoder();
 

@@ -82,10 +82,18 @@ model Submission {
   id        String @id @default(uuid())
   userId    String
   problemId String
+  language String
   source_code String
+  stdout String 
+  time String
+  memory Int
+  token String
+  compile_output String
+  message String
+  stderr String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+  status String
   user    User    @relation(fields: [userId], references: [id])
   problem Problem @relation(fields: [problemId], references: [id])
 

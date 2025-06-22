@@ -1,5 +1,5 @@
 import prisma from '@/db';
-import { cache } from '@/db/cache';
+import { cache } from '@/lib/cache';
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -50,7 +50,7 @@ export async function GET(
     !testCases ? cache.set('testCases', [problemId], testCases) : Promise.resolve(),
     !languages ? cache.set('languages',[],languages) : Promise.resolve()
   ]);
-
+  console.log({problem})
   const response = NextResponse.json(
     {
       success: true,

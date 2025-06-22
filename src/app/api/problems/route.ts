@@ -1,5 +1,5 @@
 import prisma from '@/db';
-import { cache } from '@/db/cache';
+import { cache } from '@/lib/cache';
 import { problemType } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -18,14 +18,14 @@ export async function GET(request: Request) {
   // ];
 
   let problems;
-
-  const cachedProblems = await cache.get('problems', [
+  type ProblemType = problemType['problem'];
+  const cachedProblems: ProblemType[] = await cache.get('problems', [
     page.toString(),
     limit.toString(),
   ]);
   let message = 'fetched from db';
-  // console.log({ cachedProblems });
-  if (!cachedProblems) {
+  console.log({ cachedProblems });
+  if (!cachedProblems || cachedProblems.length === 0) {
     problems = await prisma.problem.findMany({
       skip: (page - 1) * limit,
       take: limit,

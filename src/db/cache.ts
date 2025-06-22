@@ -10,18 +10,25 @@ export class Cache implements ICache {
 
   private constructor() {
     if (redisUrl) {
+      console.log('⚠️ Cache constructor called');
       this.delegate = RedisCache.getInstance(redisUrl);
-      console.log('creating redis cache')
     } else {
       this.delegate = InMemoryCache.getInstance();
     }
   }
 
   static getInstance(): Cache {
-    if (!this.instance) {
-      this.instance = new Cache();
+    // if (!Cache.instance) {
+    //   console.log('first instance')
+    //   Cache.instance = new Cache();
+    // }
+    const globalCacheKey = '__app_cache_instance__';
+    if (!(globalThis as any)[globalCacheKey]) {
+      // for runtime bugs
+      // Cache.instance = new Cache();
+      (globalThis as any)[globalCacheKey] = new Cache();
     }
-    return this.instance;
+    return (globalThis as any)[globalCacheKey];
   }
 
   async set(
@@ -43,4 +50,3 @@ export class Cache implements ICache {
 }
 
 //!for redis server with redisUrl
-export const cache = Cache.getInstance();

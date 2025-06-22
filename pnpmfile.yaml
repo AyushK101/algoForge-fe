@@ -1,0 +1,7 @@
+approvedBuilds:
+  - prisma
+  - "@prisma/client"
+  - "@prisma/engines"
+  - sharp
+  - "@tailwindcss/oxide"
+  - unrs-resolver

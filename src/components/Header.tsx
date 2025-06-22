@@ -24,8 +24,8 @@ const Header = () => {
           </div>
           <div className='flex gap-2 flex-wrap items-center justify-center'>
 
-            <Link href={'/contests'}  ><Button className='bg-transparent text-white text-md hover:bg-slate-500 hidden md:block' >Contests</Button></Link>
-            <Link href={'/problems'} ><Button className='bg-transparent text-white text-md hover:bg-slate-500 hidden md:block' >Problems</Button></Link>
+            <Link href={'/contests'}  ><Button className='bg-transparent text-white text-md hover:bg-slate-500 hidden lg:block' >Contests</Button></Link>
+            <Link href={'/problems'} ><Button className='bg-transparent text-white text-md hover:bg-slate-500 hidden lg:block' >Problems</Button></Link>
             <Link href={'/standings'} ><Button className='bg-transparent text-white text-md hover:bg-slate-500' >Standings</Button></Link>
             {/* <Button className='bg-transparent text-white text-md hover:bg-slate-500'>Standings</Button> */}
           </div>

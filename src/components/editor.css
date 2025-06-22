@@ -1,0 +1,35 @@
+/* components/editor.css */
+.editor-wrapper {
+  display: flex;
+  background: #2d2d2d;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: monospace;
+}
+
+.editor {
+  outline: none;
+  white-space: pre;
+  counter-reset: line;
+}
+
+.editor-textarea {
+  color: white;
+}
+
+.editor > div {
+  display: block;
+  position: relative;
+  padding-left: 3em;
+}
+
+.editor > div:before {
+  position: absolute;
+  left: 0;
+  width: 2.5em;
+  text-align: right;
+  padding-right: 0.5em;
+  color: #999;
+  content: counter(line);
+  counter-increment: line;
+}
