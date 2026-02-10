@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
   let role: ROLE = ROLE.USER;
   if(!ADMIN_EMAIL) {
     console.log('admin_email undefined');
-    process.exit();
+    // process.exit();
   }
   if(session.user.email == ADMIN_EMAIL) {
     role = ROLE.ADMIN;

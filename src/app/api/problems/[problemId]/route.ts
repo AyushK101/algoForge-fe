@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const JUDGE0_API_URL = process.env.JUDGE0_API_URL;
 if(!JUDGE0_API_URL) {
   console.log('judge0 api url required')
-  process.exit(1);
+  // process.exit(1);
 }
 export async function GET(
   req: NextRequest,
